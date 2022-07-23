@@ -15,6 +15,10 @@ function validatePassword(password: string): any {
     throw 'Password should contain a lowercase.'
   }
 
+  if (!/_/.test(password)) {
+    throw 'Password should contain an underscore.'
+  }
+
   return true
 }
 
@@ -30,6 +34,10 @@ describe('A valid password should meet the following requirements:', () => {
   
   test('Fails when there is no lower case.', () => {
     expect(() => validatePassword('PASSWRD1_')).toThrow(/^Password should contain a lowercase\.$/)
+  })
+
+  test('Fails when there is no underscore.', () => {
+    expect(() => validatePassword('Password1')).toThrow(/^Password should contain an underscore\.$/)
   })
 
   test('Is valid if none of the above happens.', () => {
