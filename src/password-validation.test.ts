@@ -1,4 +1,4 @@
-import { assert, describe, expect, test } from 'vitest'
+import { describe, expect, test } from 'vitest'
 
 interface Rule {
   isSatisfiedBy(password: string): boolean
