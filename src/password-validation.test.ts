@@ -19,6 +19,10 @@ function validatePassword(password: string): any {
     throw 'Password should contain an underscore.'
   }
 
+  if (!/[0-9]/.test(password)) {
+    throw 'Password should contain a number.'
+  }
+
   return true
 }
 
@@ -40,11 +44,13 @@ describe('A valid password should meet the following requirements:', () => {
     expect(() => validatePassword('Password1')).toThrow(/^Password should contain an underscore\.$/)
   })
 
+  test('Fails when there is no number.', () => {
+    expect(() => validatePassword('Password_')).toThrow(/^Password should contain a number\.$/)
+  });
+
   test('Is valid if none of the above happens.', () => {
     expect(validatePassword('Passwrd1_')).toBe(true)
   })
-
-
 })
 
 
