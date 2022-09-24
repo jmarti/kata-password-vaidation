@@ -36,24 +36,44 @@ class IsLongerThan8CharactersRule implements Rule
   }
 }
 
+class ContainLowerCaseRule implements Rule
+{
+  check(password: string): boolean {
+    if (!/[a-z]/.test(password)) {
+      throw 'Password should contain a lowercase.'
+    }
+    return true;
+  }
+}
+
+class ContainsUnderscoreRule implements Rule {
+  check(password: string): boolean {
+    if (!/_/.test(password)) {
+      throw 'Password should contain an underscore.'
+    }
+    return true;
+  }
+}
+
+class ContainsANumberRule implements Rule
+{
+  check(password: string): boolean {
+    if (!/[0-9]/.test(password)) {
+      throw 'Password should contain a number.'
+    }
+    return true;
+  }
+}
+
 function validatePassword(password: string): any {
 
   const validation = new Validation([
       new ContainsUpperCaseRule(),
-      new IsLongerThan8CharactersRule()
+      new IsLongerThan8CharactersRule(),
+      new ContainLowerCaseRule(),
+      new ContainsUnderscoreRule(),
+      new ContainsANumberRule()
   ])
-
-  if (!/[a-z]/.test(password)) {
-    throw 'Password should contain a lowercase.'
-  }
-
-  if (!/_/.test(password)) {
-    throw 'Password should contain an underscore.'
-  }
-
-  if (!/[0-9]/.test(password)) {
-    throw 'Password should contain a number.'
-  }
 
   return validation.validate(password)
 }
