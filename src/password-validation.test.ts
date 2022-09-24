@@ -26,17 +26,20 @@ class ContainsUpperCaseRule implements Rule {
   }
 }
 
-class IsLongerThan8CharactersRule implements Rule
+class HasMinLengthRule implements Rule
 {
+  constructor(private readonly length: number) {
+  }
+
   check(password: string): boolean {
-    if (password.length < 9) {
-      throw 'Password should have more than 8 characters.'
+    if (password.length < this.length) {
+      throw `Password should have more than ${this.length - 1} characters.`
     }
     return true;
   }
 }
 
-class ContainLowerCaseRule implements Rule
+class ContainsLowerCaseRule implements Rule
 {
   check(password: string): boolean {
     if (!/[a-z]/.test(password)) {
@@ -55,7 +58,7 @@ class ContainsUnderscoreRule implements Rule {
   }
 }
 
-class ContainsANumberRule implements Rule
+class ContainsNumberRule implements Rule
 {
   check(password: string): boolean {
     if (!/[0-9]/.test(password)) {
@@ -69,10 +72,10 @@ function validatePassword(password: string): any {
 
   const validation = new Validation([
       new ContainsUpperCaseRule(),
-      new IsLongerThan8CharactersRule(),
-      new ContainLowerCaseRule(),
+      new HasMinLengthRule(9),
+      new ContainsLowerCaseRule(),
       new ContainsUnderscoreRule(),
-      new ContainsANumberRule()
+      new ContainsNumberRule()
   ])
 
   return validation.validate(password)
