@@ -26,15 +26,22 @@ class ContainsUpperCaseRule implements Rule {
   }
 }
 
+class IsLongerThan8CharactersRule implements Rule
+{
+  check(password: string): boolean {
+    if (password.length < 9) {
+      throw 'Password should have more than 8 characters.'
+    }
+    return true;
+  }
+}
+
 function validatePassword(password: string): any {
 
   const validation = new Validation([
-      new ContainsUpperCaseRule()
+      new ContainsUpperCaseRule(),
+      new IsLongerThan8CharactersRule()
   ])
-
-  if (password.length < 9) {
-    throw 'Password should have more than 8 characters.'
-  }
 
   if (!/[a-z]/.test(password)) {
     throw 'Password should contain a lowercase.'
