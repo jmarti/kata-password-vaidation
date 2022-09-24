@@ -1,8 +1,7 @@
 import { describe, expect, test } from 'vitest'
 
 interface Rule {
-  isSatisfiedBy(password: string): boolean
-  errorMessage(): string
+  check(password: string): boolean
 }
 
 class Validation {
@@ -12,20 +11,26 @@ class Validation {
   public validate(password: string): boolean
   {
     this.rules.forEach(function (rule: Rule) {
-      if(!rule.isSatisfiedBy(password)) {
-        throw rule.errorMessage()
-      }
+      rule.check(password)
     })
+    return true
+  }
+}
+
+class ContainsUpperCaseRule implements Rule {
+  check(password: string): boolean {
+    if (!/[A-Z]/.test(password)) {
+      throw 'Password should contain a capital letter.'
+    }
     return true
   }
 }
 
 function validatePassword(password: string): any {
 
-  const validation = new Validation([])
-  if (!/[A-Z]/.test(password)) {
-    throw 'Password should contain a capital letter.'
-  }
+  const validation = new Validation([
+      new ContainsUpperCaseRule()
+  ])
 
   if (password.length < 9) {
     throw 'Password should have more than 8 characters.'
