@@ -1,8 +1,28 @@
 import { assert, describe, expect, test } from 'vitest'
 
+interface Rule {
+  isSatisfiedBy(password: string): boolean
+  errorMessage(): string
+}
+
+class Validation {
+  constructor(private readonly rules: Array<Rule>) {
+  }
+
+  public validate(password: string): boolean
+  {
+    this.rules.forEach(function (rule: Rule) {
+      if(!rule.isSatisfiedBy(password)) {
+        throw rule.errorMessage()
+      }
+    })
+    return true
+  }
+}
 
 function validatePassword(password: string): any {
 
+  const validation = new Validation([])
   if (!/[A-Z]/.test(password)) {
     throw 'Password should contain a capital letter.'
   }
@@ -23,7 +43,7 @@ function validatePassword(password: string): any {
     throw 'Password should contain a number.'
   }
 
-  return true
+  return validation.validate(password)
 }
 
 describe('A valid password should meet the following requirements:', () => { 
