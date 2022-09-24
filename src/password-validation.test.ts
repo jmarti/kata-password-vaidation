@@ -81,8 +81,9 @@ function validatePassword(password: string): any {
   return validation.validate(password)
 }
 
-describe('A valid password should meet the following requirements:', () => { 
-  
+describe('A valid password should meet the following requirements:', () => {
+  // @TODO: inject validator to the test and test with different validations.
+  // @ALSO: We should only have one constructor of each class in all the application
   test('Fails when 8 characters or less.', () => {
     expect(() => validatePassword('Passwr1_')).toThrow(/^Password should have more than 8 characters\.$/)
   })
